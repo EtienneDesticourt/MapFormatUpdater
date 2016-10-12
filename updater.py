@@ -38,6 +38,9 @@ def polygon_to_faces(polygon):
     if len(polygon) != 4:
         raise ValueError("Polygon doesn't have 4 points.")
 
+    if len(polygon) != len(set(polygon)):
+        raise ValueError("Identical points. Not a polygon.")
+
     face1 = polygon[:]
     # 2nd face is the 3 last points in the polygon (no matter the order, could
     # be 3 random points)
@@ -89,5 +92,14 @@ if __name__ == "__main__":
     print("Found", len(traps), "trapezoids.")
     print("Found", len(conns), "connections.")
 
-    faces = [face for polygon in traps for face in polygon_to_faces(polygon)]
+    failures = 0
+
+    faces = []
+    for polygon in traps:
+        try:
+            faces += polygon_to_faces(polygon)
+        except ValueError:
+            failures += 1
+
+    print(failures, "out of", len(traps), "polygons were malformed. They weren't added to the output map.")
     write_faces(faces, output_map_path)
