@@ -90,11 +90,4 @@ if __name__ == "__main__":
     print("Found", len(conns), "connections.")
 
     faces = [face for polygon in traps for face in polygon_to_faces(polygon)]
-
-    print(faces[0])
-    point = faces[0][0]
-    f = POINT_FORMAT.format(x=point[0], y=point[1])
-    print(f)
-    f = format_face(faces[0])
-    print(f)
     write_faces(faces, output_map_path)
